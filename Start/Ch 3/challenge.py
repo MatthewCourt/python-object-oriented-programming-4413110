@@ -15,6 +15,19 @@ class Asset(ABC):
     @abstractmethod
     def __str__(self):
         pass
+    
+    @abstractmethod
+    def __eq__(self, value):
+        pass
+
+    @abstractmethod
+    def __ge__(self, value):
+        pass
+ 
+    @abstractmethod
+    def __lt__(self, value):
+        pass
+
 
 
 class Stock(Asset):
@@ -23,6 +36,25 @@ class Stock(Asset):
         self.company = company
         self.ticker = ticker
 
+    def __str__(self):
+        return f"{self.ticker}: {self.company} -- ${self.price}"
+    
+    def __eq__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Not same type")
+        return (self.ticker == value.ticker and
+                self.company == value.company and
+                self.price == value.price)
+    
+    def __ge__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Not same type")
+        return self.price >= value.price
+    
+    def __lt__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Not same type")
+        return self.price < value.price
 
 class Bond(Asset):
     def __init__(self, price, description, duration, yieldamt):
@@ -30,6 +62,28 @@ class Bond(Asset):
         self.description = description
         self.duration = duration
         self.yieldamt = yieldamt
+
+    def __str__(self):
+        return f"{self.description}: {self.duration}yr : ${self.price} : {self.yieldamt}%"
+    
+    def __eq__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Not same type")
+        return (self.ticker == value.ticker and
+                self.company == value.company and
+                self.price == value.price)
+    
+    def __ge__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Not same type")
+        return self.yieldamt >= value.yieldamt
+    
+    def __lt__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Not same type")
+        return self.yieldamt < value.yieldamt
+
+
 
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
